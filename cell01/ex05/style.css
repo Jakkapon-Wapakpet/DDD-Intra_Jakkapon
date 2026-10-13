@@ -1,0 +1,21 @@
+table {
+    border-collapse: collapse;
+    width: 80%;
+    border: 1px solid black;
+}
+
+td {
+    border: 1px solid #000;
+    height: 100px;
+    width: 50%;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.first-cell {
+    background: green;
+}
+
+.second-cell {
+    background: pink;
+}

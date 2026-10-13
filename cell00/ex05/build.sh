@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/bash
 
 if [ $# -eq 0 ]; then
 	echo "No arguments supplied"
@@ -7,4 +7,3 @@ else
 	mkdir "ex$arg"
 	done
 fi
-

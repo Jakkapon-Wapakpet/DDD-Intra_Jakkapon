@@ -1,0 +1,101 @@
+body {
+    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* กล่องการ์ด */
+.card {
+    background-color: #ffffff;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ส่วนหัวการ์ด */
+.card-header {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 12px;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* Invisible Table: ล็อกขนาดตารางไม่ให้เนื้อหาดันจนขยาย */
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+    table-layout: fixed; /* ล็อกขนาดตารางให้คงที่ */
+}
+
+.profile-table td {
+    border: none;
+    padding: 8px 15px;
+    text-align: center; /* บังคับจัดกึ่งกลาง */
+}
+
+/* รูปโปรไฟล์: บังคับคุมขนาดรูปภาพในช่องแรกโดยตรง */
+.profile-table tr:first-child td img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    margin: 10px auto 0 auto;
+    border-radius: 6px;
+}
+
+/* ชื่อล็อกอิน */
+.login-name {
+    margin: 8px 0 0 0;
+    font-size: 18px;
+    font-weight: bold;
+    word-break: break-word; /* ป้องกันคำยาวเกินจนล้นขอบ */
+}
+
+/* คำอธิบาย 2-3 คำ */
+.description {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* กล่องไอคอนโซเชียลมีเดีย */
+.social-links {
+    display: block;
+    margin: 5px 0;
+}
+
+.social-links img {
+    width: 24px;
+    height: 24px;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
+/* ปุ่ม Contact ด้านล่าง */
+.contact-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.contact-btn:hover {
+    background-color: #0056b3;
+}
