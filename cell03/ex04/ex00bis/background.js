@@ -1,17 +1,15 @@
-function getRandomColor(){
-    const letters = '0123456789ABCDEF';
-    let color = '#'
-    for (
-        let i = 0;
-        i < 6;
-        i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    } 
-    return color;
-}
+$(document).ready(function() {
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
 
-const button = document.getElementById('btn');
-
-button.addEventListener('clicl',function(){
-    document.body.style.backgroundColor = getRandomColor();
+    // เมื่อกดปุ่ม เปลี่ยนสีพื้นหลัง body ด้วย jQuery .css()
+    $('#btn').click(function() {
+        $('body').css('background-color', getRandomColor());
+    });
 });

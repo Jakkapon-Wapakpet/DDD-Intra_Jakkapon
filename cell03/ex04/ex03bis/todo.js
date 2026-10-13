@@ -1,62 +1,55 @@
-const ftList = document.getElementById('ft_list');
-const newBtn = document.getElementById('new-btn');
+$(document).ready(function() {
+    const $ftList =$('#ft_list');
 
+    function saveToCookie() {
+        const todos = [];
+        $('.todo-item').each(function() {
+            todos.push($(this).text());
+        });
+        const encoded = encodeURIComponent(JSON.stringify(todos));
+        const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
+        document.cookie = `todo_list=${encoded}; expires=${expires}; path=/; SameSite=Lax`;
+    }
 
-function saveToCookie() {
-    const todos = [];
-    const items = ftList.querySelectorAll('.todo-item');
-    items.forEach(item => {
-        todos.push(item.textContent);
-    });
-    const encodedData = encodeURIComponent(JSON.stringify(todos));
-    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
-    document.cookie = `todo_list=${encodedData}; expires=${expires}; path=/; SameSite=Lax`;
-}
-
-function loadFromCookie() {
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith('todo_list=')) {
-            const data = cookie.substring('todo_list='.length);
-            try {
-                const todos = JSON.parse(decodeURIComponent(data));
-                for (let i = todos.length - 1; i >= 0; i--) {
-                    addTodoItem(todos[i], false);
-                }
-            } catch (e) {
-                console.error("Failed to parse cookie data", e);
+    function loadFromCookie() {
+        const cookies = document.cookie.split(';');
+        for (let c of cookies) {
+            c = c.trim();
+            if (c.startsWith('todo_list=')) {
+                try {
+                    const todos = JSON.parse(decodeURIComponent(c.substring(10)));
+                    for (let i = todos.length - 1; i >= 0; i--) {
+                        addItem(todos[i], false);
+                    }
+                } catch (e) {}
+                break;
             }
-            break;
         }
     }
-}
 
+    function addItem(text, shouldSave = true) {
+        // สร้าง div ก้อนใหม่ด้วย jQuery
+        const $item =$('<div></div>').addClass('todo-item').text(text);
 
-function addTodoItem(text, shouldSave = true) {
-    const item = document.createElement('div');
-    item.className = 'todo-item';
-    item.textContent = text;
+        // คลิกเพื่อถามลบ
+        $item.click(function() {
+            if (confirm(`Do you really want to remove this item: "${text}"?`)) {
+                $item.remove();
+                saveToCookie();
+            }
+        });
 
-    item.addEventListener('click', function() {
-        if (confirm(`Do you really want to remove this item: "${text}"?`)) {
-            item.remove(); 
-            saveToCookie(); 
+        // แทรกไว้บนสุด
+        $ftList.prepend($item);
+        if (shouldSave) saveToCookie();
+    }
+
+    $('#new-btn').click(function() {
+        const task = prompt('Enter a new TO DO:');
+        if (task && task.trim() !== '') {
+            addItem(task.trim(), true);
         }
     });
 
-    ftList.prepend(item);
-
-    if (shouldSave) {
-        saveToCookie();
-    }
-}
-
-newBtn.addEventListener('click', function() {
-    const task = prompt('Enter a new TO DO:');
-    if (task && task.trim() !== '') {
-        addTodoItem(task.trim(), true);
-    }
+    loadFromCookie();
 });
-
-window.addEventListener('load', loadFromCookie);
