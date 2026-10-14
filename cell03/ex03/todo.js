@@ -9,8 +9,10 @@ function saveTodos() {
         todos.push(item.textContent);
     });
 
-    let data = encodeURIComponent(JSON.stringify(todos));
-    document.cookie = `todo_list=${data}; max-age=604800; path=/; SameSite=Lax`;
+    let data = JSON.stringify(todos);
+    let seconds = 7 * 24 * 60 * 60;
+
+    document.cookie = "todo_list=" + encodeURIComponent(data) + "; max-age=" + seconds;
 }
 
 function addTodo(text, save = true) {
@@ -18,7 +20,7 @@ function addTodo(text, save = true) {
     item.className = 'todo-item';
     item.textContent = text;
 
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         if (confirm('Do you want to delete this item?')) {
             item.remove();
             saveTodos();
@@ -51,7 +53,7 @@ function loadTodos() {
     }
 }
 
-newBtn.addEventListener('click', function() {
+newBtn.addEventListener('click', function () {
     let text = prompt('Enter a new TO DO:');
 
     if (text && text.trim() !== '') {
