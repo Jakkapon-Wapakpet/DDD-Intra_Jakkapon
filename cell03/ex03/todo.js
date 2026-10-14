@@ -1,62 +1,62 @@
-const ftList = document.getElementById('ft_list');
+
+const list = document.getElementById('ft_list');
 const newBtn = document.getElementById('new-btn');
 
+function saveTodos() {
+    let todos = [];
 
-function saveToCookie() {
-    const todos = [];
-    const items = ftList.querySelectorAll('.todo-item');
-    items.forEach(item => {
+    list.querySelectorAll('.todo-item').forEach(item => {
         todos.push(item.textContent);
     });
-    const encodedData = encodeURIComponent(JSON.stringify(todos));
-    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
-    document.cookie = `todo_list=${encodedData}; expires=${expires}; path=/; SameSite=Lax`;
+
+    let data = encodeURIComponent(JSON.stringify(todos));
+    document.cookie = `todo_list=${data}; max-age=604800; path=/; SameSite=Lax`;
 }
 
-function loadFromCookie() {
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith('todo_list=')) {
-            const data = cookie.substring('todo_list='.length);
-            try {
-                const todos = JSON.parse(decodeURIComponent(data));
-                for (let i = todos.length - 1; i >= 0; i--) {
-                    addTodoItem(todos[i], false);
-                }
-            } catch (e) {
-                console.error("Failed to parse cookie data", e);
-            }
-            break;
-        }
-    }
-}
-
-
-function addTodoItem(text, shouldSave = true) {
-    const item = document.createElement('div');
+function addTodo(text, save = true) {
+    let item = document.createElement('div');
     item.className = 'todo-item';
     item.textContent = text;
 
     item.addEventListener('click', function() {
-        if (confirm(`Do you really want to remove this item: "${text}"?`)) {
-            item.remove(); 
-            saveToCookie(); 
+        if (confirm('Do you want to delete this item?')) {
+            item.remove();
+            saveTodos();
         }
     });
 
-    ftList.prepend(item);
+    list.prepend(item);
 
-    if (shouldSave) {
-        saveToCookie();
+    if (save) {
+        saveTodos();
+    }
+}
+
+function loadTodos() {
+    let cookie = document.cookie.split('; ')
+        .find(c => c.startsWith('todo_list='));
+
+    if (!cookie) return;
+
+    try {
+        let todos = JSON.parse(
+            decodeURIComponent(cookie.split('=')[1])
+        );
+
+        for (let i = todos.length - 1; i >= 0; i--) {
+            addTodo(todos[i], false);
+        }
+    } catch (error) {
+        console.log('Cannot load todos');
     }
 }
 
 newBtn.addEventListener('click', function() {
-    const task = prompt('Enter a new TO DO:');
-    if (task && task.trim() !== '') {
-        addTodoItem(task.trim(), true);
+    let text = prompt('Enter a new TO DO:');
+
+    if (text && text.trim() !== '') {
+        addTodo(text.trim());
     }
 });
 
-window.addEventListener('load', loadFromCookie);
+window.addEventListener('load', loadTodos);
