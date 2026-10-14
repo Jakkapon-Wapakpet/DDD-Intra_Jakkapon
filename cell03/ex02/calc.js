@@ -46,4 +46,4 @@ document.getElementById('btn-submit').addEventListener('click', function() {
 
 setInterval(function() {
     alert('Please, use me...');
-}, 30000)
+}, 50000)
